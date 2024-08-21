@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 const mongoDbURL = "mongodb+srv://bhawan:200132400588@atlascluster.fl5bp73.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster"
 
 mongoose.connect(mongoDbURL)
-.then(() => console.log('Database Connected'))
+.then(() => console.log('Database Connected Successfully.'))
 .catch((err) => console.log(err))
 
-app.listen(3000, () => console.log('Server Connected'))
+app.listen(3000, () => console.log('Server Connected Successfully'))
