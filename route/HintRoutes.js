@@ -1,5 +1,7 @@
 const express = require('express');
 const HintController = require('../controller/HintController');
+const HintAIController = require('../controller/HintAiController');
+
 
 const router = express.Router();
 
@@ -14,5 +16,7 @@ router.put('/hints/:id', HintController.updateHint);
 
 // Delete a hint
 router.delete('/hints/:id', HintController.deleteHint);
+
+router.post('/ai/error-type', HintAIController.getErrorType);
 
 module.exports = router;
