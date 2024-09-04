@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 //add that route to this
 const hintRoutes = require('../route/HintRoutes')
+const examRoutes = require('../route/ExamRoutes')
 
 const app = express()
 
@@ -19,5 +20,6 @@ mongoose.connect(mongoDbURL)
 
 //use that route
 app.use('/hint', hintRoutes)
+app.use('/exam', examRoutes)
 
 app.listen(3000, () => console.log('Server Connected Successfully'))
