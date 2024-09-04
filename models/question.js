@@ -5,7 +5,8 @@ const baseOptions = {
     collection: 'questions'
 }
 
-const questionSchema = new mongoose({
+const questionSchema = new mongoose.Schema({
+    type: String,
     question: {type: String, required: true},
     marks: Number,
     allocatedTime: Number
@@ -13,25 +14,25 @@ const questionSchema = new mongoose({
 
 const questionModel = mongoose.model('Question', questionSchema)
 
-const singleChoiceSchema = new mongoose({
+const singleChoiceSchema = new mongoose.Schema({
     options: [String],
     correctAnswer: String
 })
 
-const singleChoiceModel = questionSchema.discriminator('SingleChoiceQuestion', singleChoiceSchema)
+const singleChoiceModel = questionModel.discriminator('SingleChoiceQuestion', singleChoiceSchema)
 
-const multiChoiceQuestionSchema = new mongoose({
+const multiChoiceQuestionSchema = new mongoose.Schema({
     options: [String],
     correctAnswers: [String]
 })
 
-const multiChoiceModel = questionSchema.discriminator('MultiChoiceQuestion', multiChoiceQuestionSchema)
+const multiChoiceModel = questionModel.discriminator('MultiChoiceQuestion', multiChoiceQuestionSchema)
 
-const essaySchema = new mongoose({
+const essaySchema = new mongoose.Schema({
     wordLimit: Number
 })
 
-const essayModel = questionSchema.discriminator("EssayQuestion", essaySchema)
+const essayModel = questionModel.discriminator("EssayQuestion", essaySchema)
 
 module.exports = {
     questionModel,
