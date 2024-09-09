@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-const question = import('./question')
+const {questionSchema} = require('./Question')
 
-const examSchema = new mongoose({
+const examSchema = new mongoose.Schema({
     examDetails: String,
-    date: date,
-    time: time,
+    eDate: Date,
+    eTime: String,
     duration: Number,
-    question: question
+    question: [questionSchema]
 })
 
 const examModel = mongoose.model('Exam', examSchema)

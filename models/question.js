@@ -38,5 +38,6 @@ module.exports = {
     questionModel,
     singleChoiceModel,
     multiChoiceModel,
-    essayModel
+    essayModel,
+    questionSchema
 }

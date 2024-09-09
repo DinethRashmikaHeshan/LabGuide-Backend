@@ -1,16 +1,16 @@
-const {singleChoiceModel, multiChoiceModel, essayModel} = require('../models/Question')
+const {singleChoiceModel, multiChoiceModel, essayModel, questionModel} = require('../models/Question')
 
 class QuestionController {
 
-    static async createQuestion(req, res){
+    static async createQuestion(req){
         try {
-            const { question, marks, time, options, correctAnswer, correctAnswers, wordLimit } = req.body
+            const { type, question, marks, time, options, correctAnswer, correctAnswers, wordLimit } = req.body
             let Question = {}
             const single = "single"
             const multi = "multi"
             const essay = "essay"
             
-            if(correctAnswer){
+            if(type === 'SingleChoice'){
                 Question = new singleChoiceModel({
                     type:single,
                     question,
@@ -19,7 +19,7 @@ class QuestionController {
                     options,
                     correctAnswer
                 })
-            }else if(correctAnswers){
+            }else if(type === 'MultipleChoice'){
                 Question = new multiChoiceModel({
                     multi,
                     question,
@@ -28,7 +28,7 @@ class QuestionController {
                     options,
                     correctAnswers
                 })
-            }else if(wordLimit){
+            }else if(type === 'Essay'){
                 Question = new essayModel({
                     essay,
                     question,
@@ -38,9 +38,10 @@ class QuestionController {
                 })
             }
             await Question.save()
-            res.status(201).json(Question)
+            // res.status(201).json(Question)
+            return Question
         } catch (error) {
-            res.status(500).json({message: error.message})
+            // res.status(500).json({message: error.message})
         }
     }
 
@@ -68,6 +69,19 @@ class QuestionController {
             res.status(500).json({message: error.message})
         }
     }
+
+    // static async updateQuestion(req, res){
+    //     try {
+    //         const updateQuestion = await questionModel.findByIdAndUpdate(req.params.quesID,
+    //             {
+
+    //             }
+    //         )
+    //     } catch (error) {
+    //         res.status(500).json({message: error.message})
+    //     }
+    // }
+
 }
 
 module.exports = QuestionController
