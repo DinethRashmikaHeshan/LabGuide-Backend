@@ -1,9 +1,12 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const checkErrorsRouter = require('./routes/checkErrors');
 const compareCodeRouter = require('./routes/compareCode');
 const checkLogicalErrorsRouter = require('./routes/checkLogicalErrors');
+const authRoutes = require('./routes/auth');
+
 
 const app = express();
 app.use(cors());
@@ -16,6 +19,23 @@ app.use('/api/checkErrors', checkErrorsRouter);
 app.use('/api/compareCode', compareCodeRouter);
 
 app.use('/api/checkLogicalErrors', checkLogicalErrorsRouter);
+
+const URL = "mongodb+srv://urinduyatawaka:30VpqUiVEu3jTE1M@login.j8dwr.mongodb.net/?retryWrites=true&w=majority&appName=login"; 
+
+mongoose.connect(URL, { //connect mongodb
+    //useCreateIndex: true, 
+    //useNewUrlParser: true,
+    //useUnifiedTopology: true,
+    //useFindAndModify: false
+});
+
+const connection = mongoose.connection; //hadagatta connection eka open karagannawa
+connection.once("open", () => {
+    console.log("Mongodb connection success!"); //if success
+})
+
+app.use('/api/auth', authRoutes);
+
 
 // Start the server
 const port = process.env.PORT || 5001;
