@@ -1,20 +1,16 @@
 {
-  "name": "labguide-backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon ./server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "child_process": "^1.0.2",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.5.3",
+    "diff": "^5.2.0",
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.4"
   }
 }
