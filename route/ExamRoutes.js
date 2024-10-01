@@ -19,6 +19,8 @@ router.put('/exam/:id', ExamController.createQuestionForExam)
 router.delete('/exam/:examID/question/:quesID', ExamController.deleteQuestion)
 
 router.post('/results', ResultsController.createResults)
+router.get('/results/:id', ResultsController.getResultByExamID)
+
 
 
 
