@@ -6,6 +6,7 @@ const checkErrorsRouter = require('./routes/checkErrors');
 const compareCodeRouter = require('./routes/compareCode');
 const checkLogicalErrorsRouter = require('./routes/checkLogicalErrors');
 const authRoutes = require('./routes/auth');
+const saveLogicalErrorsRoute = require('./routes/saveLogicalErrors');
 
 
 const app = express();
@@ -19,6 +20,8 @@ app.use('/api/checkErrors', checkErrorsRouter);
 app.use('/api/compareCode', compareCodeRouter);
 
 app.use('/api/checkLogicalErrors', checkLogicalErrorsRouter);
+app.use('/api/saveLogicalErrors', saveLogicalErrorsRoute);
+
 
 const URL = "mongodb+srv://urinduyatawaka:30VpqUiVEu3jTE1M@login.j8dwr.mongodb.net/?retryWrites=true&w=majority&appName=login"; 
 
