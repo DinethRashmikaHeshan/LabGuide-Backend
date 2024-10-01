@@ -8,7 +8,7 @@ class QuestionController {
 
     static async createQuestion(req) {
         try {
-            const { type, question, marks, time, options, correctAnswer, correctAnswers, wordLimit } = req.body
+            const { type, question, marks, time, options, correctAnswer, correctAnswers, wordLimit, answer } = req.body
             let Question = {}
             const single = "single"
             const multi = "multi"
@@ -38,7 +38,8 @@ class QuestionController {
                     question,
                     marks,
                     time,
-                    wordLimit
+                    wordLimit,
+                    answer
                 })
             }
             await Question.save()
