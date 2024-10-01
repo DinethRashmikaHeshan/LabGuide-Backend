@@ -29,7 +29,8 @@ const multiChoiceQuestionSchema = new mongoose.Schema({
 const multiChoiceModel = questionModel.discriminator('MultiChoiceQuestion', multiChoiceQuestionSchema)
 
 const essaySchema = new mongoose.Schema({
-    wordLimit: Number
+    wordLimit: Number,
+    answer: String
 })
 
 const essayModel = questionModel.discriminator("EssayQuestion", essaySchema)
