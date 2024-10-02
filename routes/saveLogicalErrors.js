@@ -33,28 +33,56 @@ router.post('/', async (req, res) => {
 
 // Route to retrieve logical errors for a specific user
 router.get('/getLogicalErrors', async (req, res) => {
-    const { username } = req.query;
-  
-    try {
-      // Fetch logical errors from the database
-      const logicalErrors = await LogicalError.find({ username }); // Ensure correct model usage
-  
-      res.json({ logicalErrors });
-    } catch (error) {
-      console.error('Error fetching logical errors:', error);
-      res.status(500).json({ message: 'Internal Server Error: ' + error.message });
-    }
-  });
+  const { username, fromDate } = req.query;
 
-// Route to retrieve logical errors for all students
+  try {
+    // Parse the fromDate query parameter to a JavaScript Date object
+    const parsedFromDate = fromDate ? new Date(fromDate) : null;
+
+    // Fetch logical errors from the database
+    const logicalErrors = await LogicalError.find({
+      username,
+      ...(parsedFromDate && { timestamp: { $gte: parsedFromDate } }) // Filter by timestamp if fromDate is provided
+    });
+
+    res.json({ logicalErrors });
+  } catch (error) {
+    console.error('Error fetching logical errors:', error);
+    res.status(500).json({ message: 'Internal Server Error: ' + error.message });
+  }
+});
+
+
+// Route to retrieve logical errors for all students with filtering
 router.get('/getAllLogicalErrors', async (req, res) => {
-    try {
-      const logicalErrors = await LogicalError.find(); // Fetch all records
+  const { fromDate, toDate, username } = req.query;
+
+  try {
+      const query = {};
+
+      // Filter by username if provided
+      if (username) {
+          query.username = username;
+      }
+
+      // Filter by date range if provided
+      if (fromDate || toDate) {
+          query.timestamp = {};
+          if (fromDate) {
+              query.timestamp.$gte = new Date(fromDate);
+          }
+          if (toDate) {
+              query.timestamp.$lte = new Date(toDate);
+          }
+      }
+
+      const logicalErrors = await LogicalError.find(query); // Fetch filtered records
       res.json({ logicalErrors });
-    } catch (error) {
+  } catch (error) {
       console.error('Error fetching all students\' logical errors:', error);
       res.status(500).json({ message: 'Internal Server Error: ' + error.message });
-    }
-  });
+  }
+});
+
 
 module.exports = router;
