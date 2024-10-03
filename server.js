@@ -8,6 +8,8 @@ const checkLogicalErrorsRouter = require('./routes/checkLogicalErrors');
 const authRoutes = require('./routes/auth');
 const saveLogicalErrorsRoute = require('./routes/saveLogicalErrors');
 const errorSuggestionsRouter = require('./routes/errorSuggestions'); // Import the new router
+const getErrorDataRouter = require('./routes/getErrorData'); // Import the new router
+
 
 
 const app = express();
@@ -23,6 +25,8 @@ app.use('/api/compareCode', compareCodeRouter);
 app.use('/api/checkLogicalErrors', checkLogicalErrorsRouter);
 app.use('/api/saveLogicalErrors', saveLogicalErrorsRoute);
 app.use('/api/errorSuggestions', errorSuggestionsRouter); // Use the new error suggestions router
+app.use('/api/getErrorData', getErrorDataRouter); // Use the new error data router
+
 
 
 

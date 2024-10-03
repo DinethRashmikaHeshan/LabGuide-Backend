@@ -62,4 +62,50 @@ router.get('/:errorType/:category', async (req, res) => {
     }
 });
 
+//fetch all suggestions
+router.get('/', async (req, res) => {
+    try {
+        const suggestions = await Suggestion.find();
+        res.status(200).json(suggestions);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching suggestions", error });
+    }
+});
+
+// Route to update a suggestion by ID
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { errorType, category, supportiveLink } = req.body;
+
+    // Validate request body
+    if (!errorType || !category || !supportiveLink) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    try {
+        const updatedSuggestion = await Suggestion.findByIdAndUpdate(id, { errorType, category, supportiveLink }, { new: true });
+        if (!updatedSuggestion) {
+            return res.status(404).json({ message: "Suggestion not found" });
+        }
+        res.status(200).json(updatedSuggestion);
+    } catch (error) {
+        res.status(500).json({ message: "Error updating suggestion", error });
+    }
+});
+
+// Route to delete a suggestion by ID
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedSuggestion = await Suggestion.findByIdAndDelete(id);
+        if (!deletedSuggestion) {
+            return res.status(404).json({ message: "Suggestion not found" });
+        }
+        res.status(200).json({ message: "Suggestion deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting suggestion", error });
+    }
+});
+
 module.exports = router;
