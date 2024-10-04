@@ -5,13 +5,13 @@ const hintRoutes = require("../route/HintRoutes");
 const examRoutes = require("../route/ExamRoutes");
 
 const codeRoutes = require("../route/codeRouter");
-const checkErrorsRouter = require('./routes/checkErrors');
-const compareCodeRouter = require('./routes/compareCode');
-const checkLogicalErrorsRouter = require('./routes/checkLogicalErrors');
-const authRoutes = require('./routes/auth');
-const saveLogicalErrorsRoute = require('./routes/saveLogicalErrors');
-const errorSuggestionsRouter = require('./routes/errorSuggestions'); // Import the new router
-const getErrorDataRouter = require('./routes/getErrorData'); // Import the new router
+const checkErrorsRouter = require('../routes/checkErrors');
+const compareCodeRouter = require('../routes/compareCode');
+const checkLogicalErrorsRouter = require('../routes/checkLogicalErrors');
+const authRoutes = require('../routes/auth');
+const saveLogicalErrorsRoute = require('../routes/saveLogicalErrors');
+const errorSuggestionsRouter = require('../routes/errorSuggestions'); // Import the new router
+const getErrorDataRouter = require('../routes/getErrorData'); // Import the new router
 const app = express();
 
 const cors = require("cors");
