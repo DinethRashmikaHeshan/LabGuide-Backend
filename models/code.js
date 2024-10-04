@@ -16,12 +16,12 @@ const CodeSchema = new mongoose.Schema({
     required: true,
   },
 
-  // ownerInfo: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User"
-  //},
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 
-  //ownerName: String,
+  username: { type: String },
 
   submissionDate: {
     type: Date,
