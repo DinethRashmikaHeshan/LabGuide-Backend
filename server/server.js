@@ -43,5 +43,7 @@ app.use('/api/checkLogicalErrors', checkLogicalErrorsRouter);
 app.use('/api/saveLogicalErrors', saveLogicalErrorsRoute);
 app.use('/api/errorSuggestions', errorSuggestionsRouter); // Use the new error suggestions router
 app.use('/api/getErrorData', getErrorDataRouter); // Use the new error data router
+app.use('/api/auth', authRoutes);
+
 
 app.listen(3000, () => console.log("Server Connected Successfully"));
