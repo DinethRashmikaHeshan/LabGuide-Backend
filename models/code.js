@@ -22,6 +22,8 @@ const CodeSchema = new mongoose.Schema({
   //},
 
   //ownerName: String,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  username: { type: String, },
 
   submissionDate: {
     type: Date,
