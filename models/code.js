@@ -16,10 +16,10 @@ const CodeSchema = new mongoose.Schema({
     required: true,
   },
 
-  // ownerInfo: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User"
-  //},
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 
   //ownerName: String,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
