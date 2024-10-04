@@ -5,10 +5,10 @@ const router = express.Router();
 
 // Signup Route
 router.post('/signup', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, isInstructor } = req.body; // Include isInstructor in destructuring
 
   try {
-    const newUser = new User({ username, password }); // Store plain text password
+    const newUser = new User({ username, password, isInstructor }); // Store plain text password
     await newUser.save();
     res.status(201).send('User created successfully!');
   } catch (error) {
@@ -20,27 +20,27 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-      const user = await User.findOne({ username });
+    const user = await User.findOne({ username });
 
-      if (!user || user.password !== password) {
-          return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate token (replace with your token generation logic)
+    const token = 'your_jwt_token'; // Example token generation
+
+    // Send user data in response, including isInstructor
+    return res.json({
+      token,
+      user: {
+        username: user.username,
+        _id: user._id,
+        isInstructor: user.isInstructor, // Include isInstructor in response
       }
-
-      // Generate token (replace with your token generation logic)
-      const token = 'your_jwt_token'; // Example token generation
-      
-      // Send user data in response
-      return res.json({
-          token,
-          user: {
-              username: user.username,
-              _id: user._id,
-          }
-      });
+    });
   } catch (error) {
-      return res.status(500).json({ message: 'Server error: ' + error.message });
+    return res.status(500).json({ message: 'Server error: ' + error.message });
   }
 });
-
 
 module.exports = router;
