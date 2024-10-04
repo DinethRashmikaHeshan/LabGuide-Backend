@@ -77,37 +77,52 @@ class QuestionController {
 
     static async updateQuestion(req, res) {
         try {
-            const  data  = req.body
-            const { examID, quesID } = req.params
-
-            // Create an empty object to hold the fields that need to be updated
-            const updateFields = {};
-
-            // Dynamically add fields to the update object based on what is provided
-            if (data.question) updateFields["question.$.question"] = data.question;
-            if (data.marks) updateFields["question.$.marks"] = data.marks;
-            if (data.allocatedTime) updateFields["question.$.allocatedTime"] = data.allocatedTime;
-            if (data.options) updateFields["question.$.options"] = data.options;
-            if (data.correctAnswer) updateFields["question.$.correctAnswer"] = data.correctAnswer;
-            if (data.correctAnswers) updateFields["question.$.correctAnswers"] = data.correctAnswers;
-            if (data.wordLimit) updateFields["question.$.wordLimit"] = data.wordLimit;
-
-            console.log('examID:', examID);
-            console.log('quesID:', quesID);
-            console.log('updateFields:', updateFields);
-
-            const updateQuestion = await examModel.findOneAndUpdate(
-                { _id: examID, "question._id": quesID }, // Find the exam by ID and the specific question by quesID
-                {
-                    $set: updateFields
-                },
-                { new: true }
-            )
-            res.status(200).json(updateQuestion)
+            const { examID, quesID } = req.params;
+            const data = req.body;
+    
+            // Find the specific exam and question by ID and question type
+            const exam = await examModel.findOne({ _id: examID, "question._id": quesID });
+    
+            if (!exam) {
+                return res.status(404).json({ message: "Exam or question not found." });
+            }
+    
+            // Find the question to update based on discriminator key
+            const question = exam.question.id(quesID);
+            const questionType = question.questionType; // Get the type of the question
+    
+            let updatedQuestion;
+            if (questionType === 'SingleChoiceQuestion') {
+                updatedQuestion = await singleChoiceModel.findOneAndUpdate(
+                    { _id: quesID },
+                    { $set: { options: data.options, correctAnswer: data.correctAnswer } }, // Array and field update
+                    { new: true }
+                );
+            } else if (questionType === 'MultiChoiceQuestion') {
+                updatedQuestion = await multiChoiceModel.findOneAndUpdate(
+                    { _id: quesID },
+                    { $set: { options: data.options, correctAnswers: data.correctAnswers } }, // Update for multi-choice arrays
+                    { new: true }
+                );
+            } else if (questionType === 'EssayQuestion') {
+                updatedQuestion = await essayModel.findOneAndUpdate(
+                    { _id: quesID },
+                    { $set: { wordLimit: data.wordLimit, answer: data.answer } }, // Update for essay-specific fields
+                    { new: true }
+                );
+            } else {
+                return res.status(400).json({ message: "Invalid question type." });
+            }
+    
+            res.status(200).json(updatedQuestion);
         } catch (error) {
-            res.status(500).json({ message: error.message })
+            res.status(500).json({ message: error.message });
         }
     }
+    
+    
+    
+    
 
 }
 
