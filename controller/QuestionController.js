@@ -92,37 +92,57 @@ class QuestionController {
             const questionType = question.questionType; // Get the type of the question
     
             let updatedQuestion;
-            if (questionType === 'SingleChoiceQuestion') {
-                updatedQuestion = await singleChoiceModel.findOneAndUpdate(
-                    { _id: quesID },
-                    { $set: { options: data.options, correctAnswer: data.correctAnswer } }, // Array and field update
-                    { new: true }
-                );
-            } else if (questionType === 'MultiChoiceQuestion') {
-                updatedQuestion = await multiChoiceModel.findOneAndUpdate(
-                    { _id: quesID },
-                    { $set: { options: data.options, correctAnswers: data.correctAnswers } }, // Update for multi-choice arrays
-                    { new: true }
-                );
-            } else if (questionType === 'EssayQuestion') {
-                updatedQuestion = await essayModel.findOneAndUpdate(
-                    { _id: quesID },
-                    { $set: { wordLimit: data.wordLimit, answer: data.answer } }, // Update for essay-specific fields
-                    { new: true }
-                );
-            } else {
-                return res.status(400).json({ message: "Invalid question type." });
+            switch (questionType) {
+                case 'SingleChoiceQuestion':
+                    updatedQuestion = await singleChoiceModel.findOneAndUpdate(
+                        { _id: quesID },
+                        { $set: { options: data.options, correctAnswer: data.correctAnswer } }, // Array and field update
+                        { new: true }
+                    );
+                    break;
+                case 'MultiChoiceQuestion':
+                    updatedQuestion = await multiChoiceModel.findOneAndUpdate(
+                        { _id: quesID },
+                        { $set: { options: data.options, correctAnswers: data.correctAnswers } }, // Update for multi-choice arrays
+                        { new: true }
+                    );
+                    break;
+                case 'EssayQuestion':
+                    const updateFields = { wordLimit: data.wordLimit };
+                    
+                    // Include answer field only if it's provided in the request
+                    if (data.answer !== undefined) {
+                        updateFields.answer = data.answer; // Use undefined check to allow empty answers
+                    }
+    
+                    updatedQuestion = await essayModel.findOneAndUpdate(
+                        { _id: quesID },
+                        { $set: updateFields }, // Dynamically set fields
+                        { new: true }
+                    );
+                    break;
+                default:
+                    return res.status(400).json({ message: "Invalid question type." });
+            }
+    
+            // Check if the update was successful
+            if (!updatedQuestion) {
+                return res.status(404).json({ message: "Question not found or update failed." });
             }
     
             res.status(200).json(updatedQuestion);
         } catch (error) {
+            console.error("Error updating question:", error); // Log the error for debugging
             res.status(500).json({ message: error.message });
         }
     }
     
     
-    
-    
+
+
+
+
+
 
 }
 
