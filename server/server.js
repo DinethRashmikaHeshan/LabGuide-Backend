@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 //add that route to this
-// const hintRoutes = require("../route/HintRoutes");
+const hintRoutes = require("../route/HintRoutes");
 const examRoutes = require("../route/ExamRoutes");
 
 const codeRoutes = require("../route/codeRouter");
