@@ -9,19 +9,14 @@ const router = express.Router()
 
 router.post('/question', QuestionController.createQuestion)
 router.get('/question', QuestionController.getQuestion)
+router.put('/exam/:examID/question/:quesID', QuestionController.updateQuestion)
 
-
-// router.put('/exam/:examID/question/:quesID', QuestionController.updateQuestion)
 router.post('/exam', ExamController.createExam)
 router.get('/exam', ExamController.viewAllExams)
 router.delete('/exam/:id', ExamController.deleteExam)
 router.get('/exam/:id', ExamController.viewAllExamQuestion)
 router.put('/exam/:id', ExamController.createQuestionForExam)
 router.delete('/exam/:examID/question/:quesID', ExamController.deleteQuestion)
-router.get('/exam/:examID/question/:quesID', ExamController.getEachQuestion)
-router.put('/exam/:examID/question/:quesID', ExamController.updateQuestion)
-router.put('/exam/update/:examId', ExamController.updateExam)
-router.get('/exam/each/:examID', ExamController.getEachExam)
 
 router.post('/results', ResultsController.createResults)
 router.get('/results/:id', ResultsController.getResultByExamID)
